@@ -1,0 +1,115 @@
+{% extends "base.html" %} {% load humanize %} {% load customfilter %} {% block pageContent %}
+
+<!--Section: Content-->
+
+<head>
+    <!--important tags : these are important settings for your machine to know more about your code and how to display it-->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--title-->
+    <title>ABOUT US </title>
+    
+    <!--google fonts(the fonts that we are going to use in this tutorial: raleways and  open sans)-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,500,600,700&display=swap" rel="stylesheet">
+     <!--Link for open sans font type and its values-->  
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
+     
+    <!--Linking fontawesome file with html-->
+    <link rel="stylesheet" href="css/fontawesome/css/font-awesome.min.css">
+
+    <!--Linking bootstrap file to html-->
+    <link rel="stylesheet" href="css/bootstrap/bootstrap.css">
+
+    <!--Linking the css file to html-->
+    <link rel="stylesheet" href="css/style/style.css">
+<section class="">
+
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+            <div class="card rounded-0 shadow border-primary text-start summary-card my-3">
+                <div class="card-body">
+                    <div class="d-flex w-100">
+                        <div class="col-8 pe-2">
+                        </div>
+                        <div class="col-4">
+                            <div class="text-centerbg-light">
+                                <i class="fa fa-folder-open fs-2"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="card card-default border rounded-0 shadow">
+                <div class="card-header">
+                    <h4 class="card-title"><b>List Files</b></h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="file-table">
+                        <colgroup>
+                            <col width="20%">
+                            <col width="40%">
+                            <col width="25%">
+                            <col width="15%">
+                        </colgroup>
+                        <thead>
+                            <tr class="bg-gradient bg-light">
+                                <th class=text-center>Title</th>
+                                <th class=text-center>Description</th>
+                                <th class=text-center>FileName</th>
+                                <th class=text-center>Copy Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for post in posts %}
+                            <tr>
+                                <td class="text-start">{{ post.title }}</td>
+                                <td class="text-start">{{ post.description }}</td>
+    
+                            
+                                <td class="text-center"><button class="btn btn-default bg-gradient btn-sm copy-link" type="button" data-url="{{ request.build_absolute_uri|slice:':-1' }}{{ post.get_share_url }}" title="Copy Link tp clipboard"><i class="fa fa-copy"></i> Click Copied </button></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+</div> {% endblock pageContent %} {% block ScriptBlock %}
+<script>
+    $(function() {
+        $('#file-table').find('td, th').addClass('align-middle px-2 py-1 text-sm')
+        $('.copy-link').click(function() {
+            var input = $('<input class="clip-text">')
+            input.val($(this).attr('data-url'))
+            $('main').append(input)
+            input[0].select()
+            input[0].setSelectionRange(0, (input.val()).length)
+            var copy = document.execCommand('copy')
+            if (copy) {
+                alert("Link Copied to Clipboard")
+            }
+            setTimeout(function() {
+                input.remove()
+            }, 300)
+        })
+
+        $('#file-table').dataTable({
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],
+            "pageLength": 25
+        })
+    })
+</script>
+{% endblock ScriptBlock %}
